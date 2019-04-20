@@ -1,0 +1,9 @@
+(define (abs n)
+    (if (< n 0)
+        - n
+        n))
+
+(define (make-rat n d)
+    (cond ((< (/ n d) 0) (- (abs n) (abs d)))
+        ()))
+

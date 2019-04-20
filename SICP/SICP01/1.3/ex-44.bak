@@ -1,0 +1,7 @@
+(load "dx.rkt")
+(load "square.rkt")
+
+(define (smooth f)
+    (lambda (x) (/ ((f (- x dx)) (f x) (f (+ x dx))) 3))
+
+(smooth )

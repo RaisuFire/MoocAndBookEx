@@ -1,0 +1,7 @@
+(load "ex_37.rkt")
+
+(cont-frac (lambda (i) 1.0)
+            (lambda (i) (if ( = (remainder? i 3) 2)
+                (modulo i 3)
+                10)))
+

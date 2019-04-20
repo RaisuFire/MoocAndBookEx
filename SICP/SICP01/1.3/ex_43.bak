@@ -1,0 +1,6 @@
+(load "ex_42.rkt")
+
+(define (repeated f n)
+    (if (= n 1)
+        (lambda (x) (f x))
+        (compose (lambda (x) (f x)) (repeated f (- n 1)))))

@@ -1,0 +1,7 @@
+(load "ex_29.rkt")
+(define (sum term a next b)
+    (define (iter a result)
+        (if (> a b)
+            result
+            (iter (+ (term a) result) (next a))))
+    (iter a 0))
