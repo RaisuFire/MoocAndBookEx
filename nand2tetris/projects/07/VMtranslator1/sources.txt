@@ -1,0 +1,6 @@
+G:\MOOC\Nand2\nand2tetris\projects\07\VMtranslator1\src\CodeWriter.java
+G:\MOOC\Nand2\nand2tetris\projects\07\VMtranslator1\src\constant.CommandType.java
+G:\MOOC\Nand2\nand2tetris\projects\07\VMtranslator1\src\Main.java
+G:\MOOC\Nand2\nand2tetris\projects\07\VMtranslator1\src\Parser.java
+G:\MOOC\Nand2\nand2tetris\projects\07\VMtranslator1\src\ParserException.java
+G:\MOOC\Nand2\nand2tetris\projects\07\VMtranslator1\src\VMtranslator.java
