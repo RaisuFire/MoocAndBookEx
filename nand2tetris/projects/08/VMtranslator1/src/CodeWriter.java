@@ -108,7 +108,7 @@ public class CodeWriter {
 
     // function
     public void writeFunction(String functionName, Integer numArgs) {
-
+        String code = "(" + functionName + ")\n" + ""
     }
 
 

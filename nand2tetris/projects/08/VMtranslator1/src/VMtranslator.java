@@ -5,37 +5,40 @@ import java.io.File;
 public class VMtranslator {
 
     private Parser parser;
-    private CodeWriter codeWriter;
+    private CodeWriter writer;
 
     public VMtranslator(Parser parser, CodeWriter codeWriter) {
         this.parser = parser;
-        this.codeWriter = codeWriter;
+        this.writer = codeWriter;
     }
 
     public void translate() throws Exception {
-        while (this.parser.hasMoreCommands()) {
-            if (this.parser.asdvance()) {
+
+        while (parser.hasMoreCommands()) {
+            if (parser.asdvance()) {
                 if (CommandType.C_ARITHMETIC.equals(parser.getType())) {
-                    this.codeWriter.writeArithmetic(parser.getCommand());
+                    writer.writeArithmetic(parser.getCommand());
                 } else if (CommandType.C_PUSH.equals(parser.getType()) || CommandType.C_POP.equals(parser.getType())) {
-                    this.codeWriter.writePushPop(parser.getType(), parser.getCommand(), parser.getArg1(), parser.getArg2());
+                    writer.writePushPop(parser.getType(), parser.getCommand(), parser.getArg1(), parser.getArg2());
                 } else if (CommandType.C_LABEL.equals(parser.getType())) {
-                    this.codeWriter.writeLabel(parser.getArg1());
+                    writer.writeLabel(parser.getArg1());
                 } else if (CommandType.C_GOTO.equals(parser.getType())) {
-                    this.codeWriter.writeGoto(parser.getArg1());
+                    writer.writeGoto(parser.getArg1());
                 } else if (CommandType.C_IF.equals(parser.getType())) {
-                    this.codeWriter.writeIf(parser.getArg1());
+                    writer.writeIf(parser.getArg1());
+                } else if (CommandType.C_FUNCTION.equals(parser.getType())) {
+                    writer.writeFunction(parser.getArg1(), parser.getArg2());
                 }
 
                 else {
                     throw new Exception("unexpect command");
                 }
 
-                this.codeWriter.out.println();
-                this.codeWriter.out.flush();
+                writer.out.println();
+                writer.out.flush();
             }
         }
-        this.codeWriter.colse();
+        writer.colse();
     }
 
 
