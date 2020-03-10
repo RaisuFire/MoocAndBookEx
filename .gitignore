@@ -101,3 +101,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+#idea
+*.idea
+nand2tetris/projects/08/VMtranslator1/.idea/workspace.xml
