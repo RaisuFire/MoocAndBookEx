@@ -108,7 +108,10 @@ public class CodeWriter {
 
     // function
     public void writeFunction(String functionName, Integer numArgs) {
-        String code = "(" + functionName + ")\n" + ""
+        String code = "(" + functionName + ")\n";
+        for (int i = 0; i< numArgs; i++) {
+            code += this.writePop("local", 0);
+        }
     }
 
 
