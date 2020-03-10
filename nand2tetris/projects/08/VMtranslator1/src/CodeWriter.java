@@ -13,6 +13,7 @@ public class CodeWriter {
 
     public PrintWriter out;
     private Integer jumpNum = 0;
+    private Integer retNum = 0;
 
     public CodeWriter(File file) throws FileNotFoundException {
         this.out = new PrintWriter(file);
@@ -98,22 +99,36 @@ public class CodeWriter {
 
     // call
     public void writeCall(String functionName, Integer numArgs) {
+        String retAddr = "RETURN_LABEL" + retNum;
+        retNum++;
 
+        String code = "@"+ retAddr +"\n" + "D=A\n" + "@SP\n" +  "A=M\n" + "M=D\n" + "@SP\n" + "M=M+1\n"
+                + this.pushSementByCall("LCL")  + this.pushSementByCall("ARG")
+                + this.pushSementByCall("THIS") + this.pushSementByCall("THAT")
+                + "@SP\n" + "@D=M" + "@5\n" + "D=D-A\n" + "@SP\n" + "@" + numArgs + "\n" + "D=D-A\n" + "@ARG\n" + "M=D"
+                + "SP\n" + "D=M\n" + "@LCL\n" + "M=D\n"
+                + "@" + functionName + "\n" + "0;JMP\n"
+                + "(" + functionName + ")\n";
+
+    }
+
+    private String pushSementByCall(String segment) {
+        return "@" + segment + "\n" + "A=M\n" + "D=A\n" + "SP\n" + "A=M\n" + "M=D\n" + "@SP\n" + "M=M+1\n";
     }
 
     // return
     public void writeReturn() {
-
+        String code = "@LCL\n" + "D=M\n" + "@5\n" + "M=D\n"
     }
 
     // function
-    public void writeFunction(String functionName, Integer numArgs) {
+    public String writeFunction(String functionName, Integer numArgs) {
         String code = "(" + functionName + ")\n";
         for (int i = 0; i< numArgs; i++) {
             code += this.writePop("local", 0);
         }
+        return code;
     }
-
 
 
     private String writePop(String arg1, Integer arg2) {
@@ -139,18 +154,16 @@ public class CodeWriter {
         if ("constant".equals(arg1)) {
             code = this.pushConstant(arg2);
         } else if (this.segment1.containsKey(arg1)) {
-            code = this.pushSement1(this.segment1.get(arg1), arg2);
+            code = this.pushSegment1(this.segment1.get(arg1), arg2);
         } else if ("static".equals(arg1)) {
-            code = this.pushSement2(String.valueOf((arg2+16)));
+            code = this.pushSegment2(String.valueOf((arg2+16)));
         } else if ("pointer".equals(arg1)) {
             if (arg2 == 0) {
-                code = this.pushSement2("THIS");
+                code = this.pushSegment2("THIS");
             } else if (arg2 == 1) {
-                code = this.pushSement2("THAT");
+                code = this.pushSegment2("THAT");
             }
-        }
-
-        else {
+        } else {
             throw new Exception("unexpected push command");
         }
         return code;
@@ -160,7 +173,7 @@ public class CodeWriter {
         return "@" + index + "\nD=A\n" + "@R13\n" + "M=D\n"  + "@SP\n"+ "AM=M-1\n"+ "D=M\n"+ "@R13\n"+ "A=M\n"+ "M=D\n";
     }
 
-    private String pushSement2(String index) {
+    private String pushSegment2(String index) {
         return "@" + index + "\nD=M\n" + "@SP\n" + "A=M\n" + "M=D\n" + "@SP\n" + "M=M+1\n";
     }
 
@@ -169,7 +182,7 @@ public class CodeWriter {
                 + "@R13\n" + "A=M\n" + "M=D\n";
     }
 
-    private String pushSement1(String segment, Integer index) {
+    private String pushSegment1(String segment, Integer index) {
         return "@" + index + "\n" + "D=A\n" + "@" + segment + "\n" + "D=M+D\n" + "A=D\n" + "D=M\n" +
                 "@SP\n" + "A=M\n" +"M=D\n" + "@SP\n" + "M=M+1\n";
     }
