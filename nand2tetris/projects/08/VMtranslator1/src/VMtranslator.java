@@ -43,13 +43,17 @@ public class VMtranslator {
 
 
     public static void main(String[] args) throws Exception {
-        String inFile = "G:\\MOOC\\Nand2\\nand2tetris\\projects\\08\\ProgramFlow\\FibonacciSeries\\FibonacciSeries.vm";
-        String outFile = "G:\\MOOC\\Nand2\\nand2tetris\\projects\\08\\ProgramFlow\\FibonacciSeries\\FibonacciSeries.asm";
+        String dir = System.getProperty("user.dir");
 
+        String inFile = dir +  "/../ProgramFlow/FibonacciSeries/FibonacciSeries.vm";
+        String outFile = dir + "/../ProgramFlow/FibonacciSeries/FibonacciSeries.asm";
         Parser parser = new Parser(new File(inFile));
         CodeWriter writer = new CodeWriter(new File(outFile));
         VMtranslator vMtranslator = new VMtranslator(parser, writer);
         vMtranslator.translate();
-
     }
+
 }
+
+
+
