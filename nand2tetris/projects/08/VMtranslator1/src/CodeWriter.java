@@ -108,8 +108,9 @@ public class CodeWriter {
 
     // return
     public String writeReturn() {
-        String code = "@LCL\n" + "D=M\n" + "@FRAME\n" + "M=D\n" + "@5\n" + "A=D-A\n" + "D=M\n" + "@RET\n" + "M=D\n"
-                + "@ARG\n" + "D=M\n" + "@SP\n" + "M=D+1"
+        String code = "@LCL\n" + "D=M\n" + "@FRAME\n" + "M=D\n" + "@5\n" + "A=D-A\n" + "D=M\n"
+                + "@RET\n" + "M=D\n"
+                + this.popSegment2("ARG")
                 + this.retrunSegment("THAT")
                 + this.retrunSegment("THIS")
                 + this.retrunSegment("ARG")
@@ -171,7 +172,7 @@ public class CodeWriter {
     }
 
     private String retrunSegment(String segment) {
-        return "@FRAME\n" + "D=M-1\n" + "@" + segment + "\n" + "M=D\n";
+        return "@FRAME\n" + "D=M-1\n" + "A=D\n" + "D=M" + "@" + segment + "\n" + "M=D\n";
     }
 
     private String popSegment2(String index) {
