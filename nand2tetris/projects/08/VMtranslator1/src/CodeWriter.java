@@ -29,7 +29,7 @@ public class CodeWriter {
     }
 
     // Arithmetic
-    public void writeArithmetic(String command) throws Exception {
+    public String writeArithmetic(String command) throws Exception {
         String aCode = "";
         if ("add".equals(command)) {
             aCode = this.popTwoElm() + "M=D+M\n";
@@ -55,20 +55,18 @@ public class CodeWriter {
         } else {
             throw new Exception("unexpected arithmetic command");
         }
-        this.out.print(aCode);
-        this.out.flush();
+        return aCode;
     }
 
     // PushPop
-    public void writePushPop(CommandType commandType, String command, String arg1, Integer arg2) throws Exception {
+    public String writePushPop(CommandType commandType, String command, String arg1, Integer arg2) throws Exception {
         String code = "";
         if (CommandType.C_PUSH.equals(commandType)) {
-            code = this.writePush( arg1, arg2);
+            code = this.writePush(arg1, arg2);
         } else if (CommandType.C_POP.equals(commandType)) {
-            code = this.writePop( arg1, arg2);
+            code = this.writePop(arg1, arg2);
         }
-        this.out.print(code);
-        this.out.flush();
+        return code;
     }
 
     // init
@@ -78,58 +76,57 @@ public class CodeWriter {
     }
 
     // label
-    public void writeLabel(String label) {
-        this.out.print(MessageFormat.format("({0})", label));
-        this.out.flush();
+    public String writeLabel(String label) {
+        return MessageFormat.format("({0})", label);
     }
 
     // goto
-    public void writeGoto(String label) {
-        String code = "@" + label + "\n" + "0;JMP\n";
-        this.out.print(code);
-        this.out.flush();
+    public String writeGoto(String label) {
+        return "@" + label + "\n" + "0;JMP\n";
     }
 
     // if
-    public void writeIf(String label) {
-        String code = "@SP\n" + "AM=M-1\n" + "D=M\n" + "@" + label + "\n" +  "D;JGT\n";
-        this.out.print(code);
-        this.out.flush();
+    public String writeIf(String label) {
+        return "@SP\n" + "AM=M-1\n" + "D=M\n" + "@" + label + "\n" + "D;JGT\n";
     }
 
     // call
-    public void writeCall(String functionName, Integer numArgs) {
+    public String writeCall(String functionName, Integer numArgs) {
         String retAddr = "RETURN_LABEL" + retNum;
         retNum++;
 
-        String code = "@"+ retAddr +"\n" + "D=A\n" + "@SP\n" +  "A=M\n" + "M=D\n" + "@SP\n" + "M=M+1\n"
-                + this.pushSementByCall("LCL")  + this.pushSementByCall("ARG")
+        String code = "@" + retAddr + "\n" + "D=A\n" + "@SP\n" + "A=M\n" + "M=D\n" + "@SP\n" + "M=M+1\n"
+                + this.pushSementByCall("LCL") + this.pushSementByCall("ARG")
                 + this.pushSementByCall("THIS") + this.pushSementByCall("THAT")
                 + "@SP\n" + "@D=M" + "@5\n" + "D=D-A\n" + "@SP\n" + "@" + numArgs + "\n" + "D=D-A\n" + "@ARG\n" + "M=D"
                 + "SP\n" + "D=M\n" + "@LCL\n" + "M=D\n"
                 + "@" + functionName + "\n" + "0;JMP\n"
                 + "(" + functionName + ")\n";
 
-    }
-
-    private String pushSementByCall(String segment) {
-        return "@" + segment + "\n" + "A=M\n" + "D=A\n" + "SP\n" + "A=M\n" + "M=D\n" + "@SP\n" + "M=M+1\n";
+        return code;
     }
 
     // return
-    public void writeReturn() {
-        String code = "@LCL\n" + "D=M\n" + "@5\n" + "M=D\n"
+    public String writeReturn() {
+        String code = "@LCL\n" + "D=M\n" + "@FRAME\n" + "M=D\n" + "@5\n" + "A=D-A\n" + "D=M\n" + "@RET\n" + "M=D\n"
+                + "@ARG\n" + "D=M\n" + "@SP\n" + "M=D+1"
+                + this.retrunSegment("THAT")
+                + this.retrunSegment("THIS")
+                + this.retrunSegment("ARG")
+                + this.retrunSegment("LCL")
+                + this.writeGoto("RET");
+        return code;
     }
+
 
     // function
     public String writeFunction(String functionName, Integer numArgs) {
         String code = "(" + functionName + ")\n";
-        for (int i = 0; i< numArgs; i++) {
+        for (int i = 0; i < numArgs; i++) {
             code += this.writePop("local", 0);
         }
         return code;
     }
-
 
     private String writePop(String arg1, Integer arg2) {
         String code = "";
@@ -138,7 +135,7 @@ public class CodeWriter {
         } else if (this.segment1.containsKey(arg1)) {
             code = this.popSegment1(this.segment1.get(arg1), arg2);
         } else if ("static".equals(arg1)) {
-            code = this.popSegment2(String.valueOf((arg2+16)));
+            code = this.popSegment2(String.valueOf((arg2 + 16)));
         } else if ("pointer".equals(arg1)) {
             if (arg2 == 0) {
                 code = this.popSegment2("THIS");
@@ -156,7 +153,7 @@ public class CodeWriter {
         } else if (this.segment1.containsKey(arg1)) {
             code = this.pushSegment1(this.segment1.get(arg1), arg2);
         } else if ("static".equals(arg1)) {
-            code = this.pushSegment2(String.valueOf((arg2+16)));
+            code = this.pushSegment2(String.valueOf((arg2 + 16)));
         } else if ("pointer".equals(arg1)) {
             if (arg2 == 0) {
                 code = this.pushSegment2("THIS");
@@ -169,8 +166,16 @@ public class CodeWriter {
         return code;
     }
 
+    private String pushSementByCall(String segment) {
+        return "@" + segment + "\n" + "A=M\n" + "D=A\n" + "SP\n" + "A=M\n" + "M=D\n" + "@SP\n" + "M=M+1\n";
+    }
+
+    private String retrunSegment(String segment) {
+        return "@FRAME\n" + "D=M-1\n" + "@" + segment + "\n" + "M=D\n";
+    }
+
     private String popSegment2(String index) {
-        return "@" + index + "\nD=A\n" + "@R13\n" + "M=D\n"  + "@SP\n"+ "AM=M-1\n"+ "D=M\n"+ "@R13\n"+ "A=M\n"+ "M=D\n";
+        return "@" + index + "\nD=A\n" + "@R13\n" + "M=D\n" + "@SP\n" + "AM=M-1\n" + "D=M\n" + "@R13\n" + "A=M\n" + "M=D\n";
     }
 
     private String pushSegment2(String index) {
@@ -184,7 +189,7 @@ public class CodeWriter {
 
     private String pushSegment1(String segment, Integer index) {
         return "@" + index + "\n" + "D=A\n" + "@" + segment + "\n" + "D=M+D\n" + "A=D\n" + "D=M\n" +
-                "@SP\n" + "A=M\n" +"M=D\n" + "@SP\n" + "M=M+1\n";
+                "@SP\n" + "A=M\n" + "M=D\n" + "@SP\n" + "M=M+1\n";
     }
 
     private String pushConstant(Integer arg2) {
