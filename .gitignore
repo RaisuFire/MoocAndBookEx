@@ -106,3 +106,4 @@ $RECYCLE.BIN/
 *.idea/
 *out/
 nand2tetris/projects/08/VMtranslator1/.idea/workspace.xml
+nand2tetris/tools/bin/CPU Emulator.dat

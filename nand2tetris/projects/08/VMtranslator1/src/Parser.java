@@ -78,6 +78,9 @@ public class Parser {
 
     // 分解输入命令，得到指令和参数
     private List<String> preProcess(String line) {
+        if (line.contains("//")) {
+            line = line.substring(0, line.indexOf("//"));
+        }
         String[] strs = line.split(" +");
         return Arrays.asList(strs).stream().map(String::trim)
                 .collect(Collectors.toList());

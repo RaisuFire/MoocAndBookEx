@@ -111,11 +111,12 @@ public class CodeWriter {
         String code = "@LCL\n" + "D=M\n" + "@FRAME\n" + "M=D\n" + "@5\n" + "A=D-A\n" + "D=M\n"
                 + "@RET\n" + "M=D\n"
                 + this.popSegment2("ARG")
+                + "@ARG\n" + "D=M\n" + "@SP\n" + "M=D+1\n"
                 + this.retrunSegment("THAT")
                 + this.retrunSegment("THIS")
                 + this.retrunSegment("ARG")
                 + this.retrunSegment("LCL")
-                + this.writeGoto("RET");
+                + "@RET\n" + "A=M\n" + "0;JMP";
         return code;
     }
 
@@ -124,7 +125,7 @@ public class CodeWriter {
     public String writeFunction(String functionName, Integer numArgs) {
         String code = "(" + functionName + ")\n";
         for (int i = 0; i < numArgs; i++) {
-            code += this.writePop("local", 0);
+            code += this.writePop("local", i);
         }
         return code;
     }
@@ -172,7 +173,7 @@ public class CodeWriter {
     }
 
     private String retrunSegment(String segment) {
-        return "@FRAME\n" + "D=M-1\n" + "A=D\n" + "D=M" + "@" + segment + "\n" + "M=D\n";
+        return "@FRAME\n" + "D=M-1\n" + "AM=D\n" + "D=M\n" + "@" + segment + "\n" + "M=D\n";
     }
 
     private String popSegment2(String index) {
