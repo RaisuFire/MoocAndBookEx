@@ -51,6 +51,7 @@ public class VMtranslator {
         CodeWriter writer = new CodeWriter(new File(outFile));
         VMtranslator vMtranslator = new VMtranslator(parser, writer);
         vMtranslator.translate();
+
     }
 
 }
