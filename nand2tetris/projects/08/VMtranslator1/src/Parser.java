@@ -42,51 +42,45 @@ public class Parser {
         List<String> strs = this.preProcess(line);
         String s = strs.get(0);
         if (ArithmeticOps.contains(s)) {
-            this.type = CommandType.C_ARITHMETIC;
-            this.command = s;
+            this.porpertiesFromLine(CommandType.C_ARITHMETIC, s, null, null);
         } else if (s.equals("push")) {
-            this.type = CommandType.C_PUSH;
-            this.command = s;
-            this.arg1 = strs.get(1);
-            this.arg2 = Integer.valueOf(strs.get(2));
+            this.porpertiesFromLine(CommandType.C_PUSH, s, strs.get(1), Integer.valueOf(strs.get(2)));
         } else if (s.equals("pop")) {
-            this.type = CommandType.C_POP;
-            this.command = s;
-            this.arg1 = strs.get(1);
-            this.arg2 = Integer.valueOf(strs.get(2));
+            this.porpertiesFromLine(CommandType.C_POP, s, strs.get(1), Integer.valueOf(strs.get(2)));
         } else if (s.equals("label")){
-            this.type = CommandType.C_LABEL;
-            this.command = s;
-            this.arg1 = strs.get(1);
+            this.porpertiesFromLine(CommandType.C_LABEL, s, strs.get(1), null);
         } else if (s.equals("goto")) {
-            this.type = CommandType.C_GOTO;
-            this.command = s;
-            this.arg1 = strs.get(1);
+            this.porpertiesFromLine(CommandType.C_GOTO, s, strs.get(1), null);
         } else if (s.equals("if-goto")) {
-            this.type = CommandType.C_IF;
-            this.command = s;
-            this.arg1 = strs.get(1);
+            this.porpertiesFromLine(CommandType.C_IF, s, strs.get(1), null);
         } else if (s.equals("function")) {
-            this.type = CommandType.C_FUNCTION;
-            this.command = s;
-            this.arg1 = strs.get(1);
-            this.arg2 = Integer.valueOf(strs.get(2));
+            this.porpertiesFromLine(CommandType.C_FUNCTION, s,  strs.get(1), Integer.valueOf(strs.get(2)));
         } else if (s.equals("call")) {
-            this.type = CommandType.C_CALL;
-            this.command = s;
-            this.arg1 = strs.get(1);
-            this.arg2 = Integer.valueOf(strs.get(2));
+            this.porpertiesFromLine(CommandType.C_CALL, s, strs.get(1), Integer.valueOf(strs.get(2)));
         } else if (s.equals("return")) {
-            this.type = CommandType.C_RETURN;
-            this.command = s;
+            this.porpertiesFromLine(CommandType.C_RETURN, s, null, null);
         } else {
             throw new ParserException("unexpected parser command: " + line);
+        }
+    }
+
+    private void porpertiesFromLine(CommandType type, String command, String arg1, Integer arg2) {
+        this.type = type;
+        this.command = command;
+        if (arg1 != null) {
+            this.arg1 = arg1;
+        }
+        if (arg2 != null) {
+            this.arg2 = arg2;
         }
     }
 
 
     // 分解输入命令，得到指令和参数
     private List<String> preProcess(String line) {
+        if (line.contains("//")) {
+            line = line.substring(0, line.indexOf("//"));
+        }
         String[] strs = line.split(" +");
         return Arrays.asList(strs).stream().map(String::trim)
                 .collect(Collectors.toList());

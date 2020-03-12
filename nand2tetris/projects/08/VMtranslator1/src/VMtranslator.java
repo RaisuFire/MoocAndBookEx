@@ -16,24 +16,27 @@ public class VMtranslator {
 
         while (parser.hasMoreCommands()) {
             if (parser.asdvance()) {
+                String code = "";
                 if (CommandType.C_ARITHMETIC.equals(parser.getType())) {
-                    writer.writeArithmetic(parser.getCommand());
+                    code = writer.writeArithmetic(parser.getCommand());
                 } else if (CommandType.C_PUSH.equals(parser.getType()) || CommandType.C_POP.equals(parser.getType())) {
-                    writer.writePushPop(parser.getType(), parser.getCommand(), parser.getArg1(), parser.getArg2());
+                    code = writer.writePushPop(parser.getType(), parser.getCommand(), parser.getArg1(), parser.getArg2());
                 } else if (CommandType.C_LABEL.equals(parser.getType())) {
-                    writer.writeLabel(parser.getArg1());
+                    code = writer.writeLabel(parser.getArg1());
                 } else if (CommandType.C_GOTO.equals(parser.getType())) {
-                    writer.writeGoto(parser.getArg1());
+                    code = writer.writeGoto(parser.getArg1());
                 } else if (CommandType.C_IF.equals(parser.getType())) {
-                    writer.writeIf(parser.getArg1());
+                    code = writer.writeIf(parser.getArg1());
                 } else if (CommandType.C_FUNCTION.equals(parser.getType())) {
-                    writer.writeFunction(parser.getArg1(), parser.getArg2());
-                }
-
-                else {
+                    code = writer.writeFunction(parser.getArg1(), parser.getArg2());
+                } else if (CommandType.C_CALL.equals(parser.getType())) {
+                    code = writer.writeCall(parser.getArg1(), parser.getArg2());
+                } else if (CommandType.C_RETURN.equals(parser.getType())) {
+                    code = writer.writeReturn();
+                } else {
                     throw new Exception("unexpect command");
                 }
-
+                writer.out.print(code);
                 writer.out.println();
                 writer.out.flush();
             }
