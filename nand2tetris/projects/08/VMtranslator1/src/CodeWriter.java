@@ -110,7 +110,7 @@ public class CodeWriter {
     public String writeReturn() {
         String code = "@LCL\n" + "D=M\n" + "@FRAME\n" + "M=D\n" + "@5\n" + "A=D-A\n" + "D=M\n"
                 + "@RET\n" + "M=D\n"
-                + this.popSegment2("ARG")
+                + this.popSegment1("ARG", 0)
                 + "@ARG\n" + "D=M\n" + "@SP\n" + "M=D+1\n"
                 + this.retrunSegment("THAT")
                 + this.retrunSegment("THIS")
@@ -122,10 +122,10 @@ public class CodeWriter {
 
 
     // function
-    public String writeFunction(String functionName, Integer numArgs) {
+    public String writeFunction(String functionName, Integer numArgs) throws Exception {
         String code = "(" + functionName + ")\n";
         for (int i = 0; i < numArgs; i++) {
-            code += this.writePop("local", i);
+            code += this.writePush("constant", 0);
         }
         return code;
     }
