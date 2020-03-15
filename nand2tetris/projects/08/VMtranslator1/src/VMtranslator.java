@@ -48,8 +48,8 @@ public class VMtranslator {
     public static void main(String[] args) throws Exception {
         String dir = System.getProperty("user.dir");
 
-        String inFile = dir +  "/../ProgramFlow/FibonacciSeries/FibonacciSeries.vm";
-        String outFile = dir + "/../ProgramFlow/FibonacciSeries/FibonacciSeries.asm";
+        String inFile = dir +  "/../FunctionCalls/SimpleFunction/SimpleFunction.vm";
+        String outFile = dir + "/../FunctionCalls/SimpleFunction/SimpleFunction.asm";
         Parser parser = new Parser(new File(inFile));
         CodeWriter writer = new CodeWriter(new File(outFile));
         VMtranslator vMtranslator = new VMtranslator(parser, writer);

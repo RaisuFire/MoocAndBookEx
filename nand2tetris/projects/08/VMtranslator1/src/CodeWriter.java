@@ -139,7 +139,7 @@ public class CodeWriter {
         } else if ("static".equals(arg1)) {
             code = this.popSegment2(String.valueOf((arg2 + 16)));
         } else if ("pointer".equals(arg1)) {
-            if (arg2 == 0) {
+            if (arg2 == 0) {   
                 code = this.popSegment2("THIS");
             } else if (arg2 == 1) {
                 code = this.popSegment2("THAT");
