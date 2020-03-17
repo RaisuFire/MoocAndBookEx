@@ -12,6 +12,7 @@ public class CodeWriter {
     public Map<String, String> segment1 = new HashMap<>();
 
     public PrintWriter out;
+
     private Integer jumpNum = 0;
     private Integer retNum = 0;
 
@@ -70,14 +71,14 @@ public class CodeWriter {
     }
 
     // init
-    public void writeInit() {
-
-
+    public String writeInit() {
+        return "@256\n" + "D=A\n" + "@SP\n" + "M=D\n" +
+                this.writeCall("Sys.init", 0);
     }
 
     // label
     public String writeLabel(String label) {
-        return MessageFormat.format("({0})", label);
+        return MessageFormat.format("({0})\n", label);
     }
 
     // goto
@@ -87,7 +88,7 @@ public class CodeWriter {
 
     // if
     public String writeIf(String label) {
-        return "@SP\n" + "AM=M-1\n" + "D=M\n" + "@" + label + "\n" + "D;JGT\n";
+        return "@SP\n" + "AM=M-1\n" + "D=M\n" + "@" + label + "\n" + "D;JNE\n";
     }
 
     // call
@@ -98,10 +99,10 @@ public class CodeWriter {
         String code = "@" + retAddr + "\n" + "D=A\n" + "@SP\n" + "A=M\n" + "M=D\n" + "@SP\n" + "M=M+1\n"
                 + this.pushSementByCall("LCL") + this.pushSementByCall("ARG")
                 + this.pushSementByCall("THIS") + this.pushSementByCall("THAT")
-                + "@SP\n" + "@D=M" + "@5\n" + "D=D-A\n" + "@SP\n" + "@" + numArgs + "\n" + "D=D-A\n" + "@ARG\n" + "M=D"
-                + "SP\n" + "D=M\n" + "@LCL\n" + "M=D\n"
+                + "@SP\n" + "D=M\n" + "@5\n" + "D=D-A\n" + "@" + numArgs + "\n" + "D=D-A\n" + "@ARG\n" + "M=D\n"
+                + "@SP\n" + "D=M\n" + "@LCL\n" + "M=D\n"
                 + "@" + functionName + "\n" + "0;JMP\n"
-                + "(" + functionName + ")\n";
+                + "(" + retAddr + ")\n";
 
         return code;
     }
@@ -110,13 +111,13 @@ public class CodeWriter {
     public String writeReturn() {
         String code = "@LCL\n" + "D=M\n" + "@FRAME\n" + "M=D\n" + "@5\n" + "A=D-A\n" + "D=M\n"
                 + "@RET\n" + "M=D\n"
-                + this.popSegment2("ARG")
+                + this.popSegment1("ARG", 0)
                 + "@ARG\n" + "D=M\n" + "@SP\n" + "M=D+1\n"
                 + this.retrunSegment("THAT")
                 + this.retrunSegment("THIS")
                 + this.retrunSegment("ARG")
                 + this.retrunSegment("LCL")
-                + "@RET\n" + "A=M\n" + "0;JMP";
+                + "@RET\n" + "A=M\n" + "0;JMP\n";
         return code;
     }
 
@@ -125,7 +126,7 @@ public class CodeWriter {
     public String writeFunction(String functionName, Integer numArgs) {
         String code = "(" + functionName + ")\n";
         for (int i = 0; i < numArgs; i++) {
-            code += this.writePop("local", i);
+            code += this.pushConstant(0);
         }
         return code;
     }
@@ -169,7 +170,7 @@ public class CodeWriter {
     }
 
     private String pushSementByCall(String segment) {
-        return "@" + segment + "\n" + "A=M\n" + "D=A\n" + "SP\n" + "A=M\n" + "M=D\n" + "@SP\n" + "M=M+1\n";
+        return "@" + segment + "\n" + "D=M\n" + "@SP\n" + "A=M\n" + "M=D\n" + "@SP\n" + "M=M+1\n";
     }
 
     private String retrunSegment(String segment) {
@@ -225,6 +226,11 @@ public class CodeWriter {
 
     private String negAsm() {
         return "@SP\n" + "A=M\n" + "M=-M\n";
+    }
+
+    public void write(String code){
+        this.out.print(code);
+        this.out.flush();
     }
 
     public void colse() {

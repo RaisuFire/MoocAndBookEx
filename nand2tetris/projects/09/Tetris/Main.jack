@@ -1,0 +1,7 @@
+class Main{
+    function void main() {
+        var Square square;
+        let square = Square.new(0);
+        return;
+    }
+}

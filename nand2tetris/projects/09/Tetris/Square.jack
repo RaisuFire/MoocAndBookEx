@@ -1,0 +1,24 @@
+class Square {
+    field int p;
+    field Unit u1, u2, u3, u4;
+
+    /** Constructs a new square with a given location and size. */
+    constructor Square new(int position) {
+        let p = position;
+        let u1 = Unit.new(p);
+        let u2 = Unit.new(p+1);
+        let u3 = Unit.new(p+512);
+        let u4 = Unit.new(p+513);
+
+        return this;
+    }
+
+    /** Disposes this square. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+
+
+}
