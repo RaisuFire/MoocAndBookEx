@@ -1,4 +1,4 @@
-function Square.new 0
+function Trapezoid.new 0
 push constant 2
 call Memory.alloc 1
 pop pointer 0
@@ -9,11 +9,11 @@ pop this 1
 push pointer 0
 push constant 1
 neg
-call Square.draw 2
+call Trapezoid.draw 2
 pop temp 0
 push pointer 0
 return
-function Square.dispose 0
+function Trapezoid.dispose 0
 push argument 0
 pop pointer 0
 push pointer 0
@@ -21,7 +21,7 @@ call Memory.deAlloc 1
 pop temp 0
 push constant 0
 return
-function Square.moveDown 0
+function Trapezoid.moveDown 0
 push argument 0
 pop pointer 0
 push this 1
@@ -37,7 +37,7 @@ pop this 1
 label IF_FALSE0
 push constant 0
 return
-function Square.moveRight 0
+function Trapezoid.moveRight 0
 push argument 0
 pop pointer 0
 push this 0
@@ -53,7 +53,7 @@ pop this 0
 label IF_FALSE0
 push constant 0
 return
-function Square.moveLeft 0
+function Trapezoid.moveLeft 0
 push argument 0
 pop pointer 0
 push this 0
@@ -69,7 +69,7 @@ pop this 0
 label IF_FALSE0
 push constant 0
 return
-function Square.draw 0
+function Trapezoid.draw 0
 push argument 0
 pop pointer 0
 push this 0
@@ -102,7 +102,7 @@ call Unit.draw 3
 pop temp 0
 push constant 0
 return
-function Square.run 1
+function Trapezoid.run 1
 push argument 0
 pop pointer 0
 push constant 0
@@ -113,29 +113,19 @@ not
 not
 if-goto WHILE_END0
 push this 1
-push constant 14
-eq
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
-push constant 0
-not
-pop local 0
-label IF_FALSE0
-push this 1
 call Output.printInt 1
 pop temp 0
 push pointer 0
 push constant 0
-call Square.draw 2
+call Trapezoid.draw 2
 pop temp 0
 push pointer 0
-call Square.moveDown 1
+call Trapezoid.moveDown 1
 pop temp 0
 push pointer 0
 push constant 1
 neg
-call Square.draw 2
+call Trapezoid.draw 2
 pop temp 0
 push constant 1000
 call Sys.wait 1

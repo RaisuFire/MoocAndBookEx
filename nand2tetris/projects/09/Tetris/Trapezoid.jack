@@ -1,7 +1,7 @@
-class Square {
+class Trapezoid  {
     field int x, y;
 
-    constructor Square new(int Ax, int Ay) {
+    constructor Trapezoid new(int Ax, int Ay) {
         let x = Ax;
         let y = Ay;
         do draw(-1);
@@ -17,6 +17,7 @@ class Square {
         if (y < 14) {
             let y = y + 1;
         }
+
         return;
     }
 
@@ -47,13 +48,8 @@ class Square {
         var boolean exit;
         let exit = false;
 
-
-
         while (~exit) {
-            if (y = 14) {
-                let exit = true;
-                do dispose();
-            }
+            do Output.printInt(y);
             do draw(0);
             do moveDown();
             do draw(-1);
