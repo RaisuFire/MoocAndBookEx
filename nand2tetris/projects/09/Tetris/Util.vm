@@ -1,0 +1,350 @@
+function Util.draw 1
+push constant 16384
+push constant 512
+push argument 1
+call Math.multiply 2
+add
+push constant 1
+push argument 0
+call Math.multiply 2
+add
+pop local 0
+push local 0
+push constant 0
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 32
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 64
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 96
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 128
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 160
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 192
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 224
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 256
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 288
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 320
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 352
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 384
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 416
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 448
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 480
+add
+push argument 2
+call Memory.poke 2
+pop temp 0
+push constant 0
+return
+function Util.drawLine 0
+push constant 0
+push argument 0
+push argument 1
+call Util.draw 3
+pop temp 0
+push constant 1
+push argument 0
+push argument 1
+call Util.draw 3
+pop temp 0
+push constant 2
+push argument 0
+push argument 1
+call Util.draw 3
+pop temp 0
+push constant 3
+push argument 0
+push argument 1
+call Util.draw 3
+pop temp 0
+push constant 4
+push argument 0
+push argument 1
+call Util.draw 3
+pop temp 0
+push constant 5
+push argument 0
+push argument 1
+call Util.draw 3
+pop temp 0
+push constant 6
+push argument 0
+push argument 1
+call Util.draw 3
+pop temp 0
+push constant 7
+push argument 0
+push argument 1
+call Util.draw 3
+pop temp 0
+push constant 8
+push argument 0
+push argument 1
+call Util.draw 3
+pop temp 0
+push constant 9
+push argument 0
+push argument 1
+call Util.draw 3
+pop temp 0
+push constant 0
+return
+function Util.fullLine 3
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 10
+lt
+not
+if-goto WHILE_END0
+push local 0
+push argument 0
+call Util.fullUnit 2
+pop local 2
+push local 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+push constant 1
+add
+pop local 0
+goto IF_END0
+label IF_FALSE0
+push local 1
+return
+label IF_END0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+not
+return
+function Util.fullUnit 4
+push constant 0
+pop local 1
+push constant 0
+pop local 2
+push constant 16384
+push constant 512
+push argument 1
+call Math.multiply 2
+add
+push constant 1
+push argument 0
+call Math.multiply 2
+add
+pop local 0
+label WHILE_EXP0
+push local 1
+push constant 16
+lt
+not
+if-goto WHILE_END0
+push local 0
+push constant 32
+push local 1
+call Math.multiply 2
+add
+call Memory.peek 1
+pop local 2
+push local 2
+push constant 1
+neg
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+not
+return
+function Util.redraw 0
+label WHILE_EXP0
+push argument 0
+push constant 0
+gt
+not
+if-goto WHILE_END0
+push argument 0
+call Util.redrawLine 1
+pop temp 0
+push argument 0
+push constant 1
+sub
+pop argument 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Util.redrawLine 1
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 10
+lt
+not
+if-goto WHILE_END0
+push local 0
+push argument 0
+call Util.redrawUnit 2
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Util.redrawUnit 3
+push argument 1
+push constant 1
+sub
+pop local 2
+push constant 16384
+push constant 512
+push local 2
+call Math.multiply 2
+add
+push constant 1
+push argument 0
+call Math.multiply 2
+add
+pop local 0
+label WHILE_EXP0
+push local 2
+push constant 0
+gt
+not
+if-goto WHILE_END0
+push local 0
+push constant 32
+push local 2
+call Math.multiply 2
+add
+call Memory.peek 1
+pop local 1
+push local 0
+push constant 32
+push local 2
+call Math.multiply 2
+add
+push constant 512
+add
+push local 1
+call Memory.poke 2
+pop temp 0
+push local 2
+push constant 1
+sub
+pop local 2
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Util.collide 3
+push constant 16384
+push constant 512
+push argument 1
+push constant 2
+add
+call Math.multiply 2
+add
+push constant 1
+push argument 0
+call Math.multiply 2
+add
+pop local 0
+push local 0
+call Memory.peek 1
+pop local 1
+push local 1
+call Output.printInt 1
+pop temp 0
+push local 1
+push constant 0
+eq
+not
+return

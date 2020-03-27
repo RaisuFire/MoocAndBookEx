@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b8cf475f-87d2-4bf1-925e-ae5458198889" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../FunctionCalls/SimpleFunction/SimpleFunction.asm" beforeDir="false" afterPath="$PROJECT_DIR$/../FunctionCalls/SimpleFunction/SimpleFunction.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FunctionCalls/SimpleFunction/SimpleFunction.out" beforeDir="false" afterPath="$PROJECT_DIR$/../FunctionCalls/SimpleFunction/SimpleFunction.out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CodeWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CodeWriter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/VMtranslator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/VMtranslator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../09/Tetris/Main.jack" beforeDir="false" afterPath="$PROJECT_DIR$/../../09/Tetris/Main.jack" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../09/Tetris/Main.vm" beforeDir="false" afterPath="$PROJECT_DIR$/../../09/Tetris/Main.vm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../09/Tetris/Square.jack" beforeDir="false" afterPath="$PROJECT_DIR$/../../09/Tetris/Square.jack" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../09/Tetris/Square.vm" beforeDir="false" afterPath="$PROJECT_DIR$/../../09/Tetris/Square.vm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../09/Tetris/Unit.jack" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../09/Tetris/Unit.vm" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,7 +28,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/VMtranslator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-33">
+            <state relative-caret-position="153">
               <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
             </state>
           </provider>
@@ -36,7 +38,7 @@
         <entry file="file://$PROJECT_DIR$/src/CodeWriter.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="238">
-              <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+              <caret line="22" selection-start-line="22" selection-end-line="22" />
             </state>
           </provider>
         </entry>
@@ -63,8 +65,8 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="43" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="54" />
     <option name="y" value="23" />
     <option name="width" value="1386" />
     <option name="height" value="877" />
@@ -75,7 +77,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -92,7 +94,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -142,7 +144,7 @@
     <frame x="54" y="23" width="1386" height="877" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49893844" visible="true" weight="0.13616072" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49893844" visible="true" weight="0.1376488" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -212,7 +214,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/VMtranslator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-33">
+        <state relative-caret-position="153">
           <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
         </state>
       </provider>
@@ -220,7 +222,7 @@
     <entry file="file://$PROJECT_DIR$/src/CodeWriter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
-          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
         </state>
       </provider>
     </entry>

@@ -1,0 +1,27 @@
+function Main.main 1
+push constant 16384
+push constant 512
+push constant 0
+call Math.multiply 2
+add
+push constant 1
+push constant 0
+call Math.multiply 2
+add
+pop local 0
+push local 0
+push constant 0
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 1
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push constant 0
+return

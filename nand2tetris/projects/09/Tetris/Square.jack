@@ -1,9 +1,11 @@
 class Square {
     field int x, y;
+    field boolean alive;
 
     constructor Square new(int Ax, int Ay) {
         let x = Ax;
         let y = Ay;
+        let alive = false;
         do draw(-1);
         return this;
     }
@@ -14,53 +16,50 @@ class Square {
     }
 
     method void moveDown() {
+        do draw(0);
         if (y < 14) {
             let y = y + 1;
         }
+        do draw(-1);
         return;
     }
 
     method void moveRight() {
+        do draw(0);
         if (x < 8) {
             let x = x + 1;
         }
+        do draw(-1);
         return;
     }
 
     method void moveLeft() {
+        do draw(0);
         if (x > 0) {
             let x = x - 1;
         }
+        do draw(-1);
         return;
     }
 
+    method void moveUp() {
+        return;
+    }
 
     method void draw(int c) {
-        do Unit.draw(x, y, c);
-        do Unit.draw(x+1, y, c);
-        do Unit.draw(x, y+1, c);
-        do Unit.draw(x+1, y+1, c);
+        do Util.draw(x, y, c);
+        do Util.draw(x+1, y, c);
+        do Util.draw(x, y+1, c);
+        do Util.draw(x+1, y+1, c);
         return;
     }
 
-    method void run() {
-        var boolean exit;
-        let exit = false;
+    method int getY() {
+        return y;
+    }
 
-
-
-        while (~exit) {
-            if (y = 14) {
-                let exit = true;
-                do dispose();
-            }
-            do draw(0);
-            do moveDown();
-            do draw(-1);
-            do Sys.wait(1000);
-        }
-
-        return;
+    method int getX() {
+        return x;
     }
 
 
