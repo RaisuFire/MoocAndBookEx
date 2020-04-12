@@ -19,10 +19,5 @@ public class Main {
 //        Pattern pattern = Pattern.compile("[/**]?|[*/]");
 //        System.out.println(main.find(pattern, text));
 
-
-        String a = "wfsdfsdfds";
-        a.substring(2, 4);
-        System.out.print(a);
-
     }
 }

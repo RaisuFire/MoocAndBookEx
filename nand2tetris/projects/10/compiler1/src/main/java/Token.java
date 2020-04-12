@@ -31,4 +31,9 @@ public class Token {
         Token t = (Token) obj;
         return this.getVal().equals(t.getVal()) || this.getType() == t.getType();
     }
+
+    @Override
+    public String toString() {
+        return type + ": " + val + "\n";
+    }
 }
