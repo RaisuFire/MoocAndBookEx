@@ -1,11 +1,9 @@
 import constant.Keyword;
 import constant.TokenType;
+import entity.Token;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.HashMap;
 
 public class CompilationEngine {
     public static String[] opArray = new String[]{"+", "-", "*", "/", "&", "|", "<", ">", "=", "&lt;", "&gt;", "&amp;"};

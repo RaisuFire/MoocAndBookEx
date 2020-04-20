@@ -1,3 +1,5 @@
+import entity.CharUtil;
+
 public class Util {
     public static String skipWhileSpace(String str) {
         String newStr = "";

@@ -1,6 +1,8 @@
-class CharUtil {
+package entity;
 
-    static boolean isWhiteSpace(char c) {
+public class CharUtil {
+
+    public static boolean isWhiteSpace(char c) {
         switch (c) {
             case '\t':
             case '\n':
@@ -13,15 +15,15 @@ class CharUtil {
         return false;
     }
 
-    static boolean isNewLine(char c) {
+    public static boolean isNewLine(char c) {
         return c == '\r' || c == '\n';
     }
 
-    static boolean isDigit(char c) {
+    public static boolean isDigit(char c) {
         return c >= '0' && c <= '9';
     }
 
-    static boolean isLetter(char c) {
+    public static boolean isLetter(char c) {
         return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';
     }
 

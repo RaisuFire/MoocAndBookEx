@@ -1,3 +1,4 @@
+import entity.CharSeq;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,4 +1,5 @@
 import constant.TokenType;
+import entity.Token;
 import org.junit.Before;
 import org.junit.Test;
 

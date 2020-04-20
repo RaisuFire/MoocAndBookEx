@@ -1,3 +1,5 @@
+package entity;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,23 +17,23 @@ public class CharSeq implements CharSequence{
         return str.charAt(pos++);
     }
 
-    void next(int n) {
+    public void next(int n) {
         pos += n;
     }
 
-    boolean startsWith(String prefix) {
+    public boolean startsWith(String prefix) {
         return str.startsWith(prefix, pos);
     }
 
-    int indexOf(String s) {
+    public int indexOf(String s) {
         return str.indexOf(s, pos) - pos;
     }
 
-    String substring(int beginIndex, int endIndex) {
+    public String substring(int beginIndex, int endIndex) {
         return str.substring(beginIndex + pos, endIndex + pos);
     }
 
-    String find(Pattern pattern) {
+    public String find(Pattern pattern) {
         Matcher matcher = pattern.matcher(this);
         return matcher.find()
                 ? matcher.group(0) : null;

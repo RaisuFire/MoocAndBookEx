@@ -1,9 +1,10 @@
 
 import constant.Keyword;
 import constant.TokenType;
+import entity.CharSeq;
+import entity.CharUtil;
+import entity.Token;
 
-import java.io.*;
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class JackTokenizer {
@@ -226,30 +227,6 @@ public class JackTokenizer {
         this.text = text;
     }
 
-
-//    public TokenType tokenType() {
-//
-//    }
-//
-//    public Keyword keyword() {
-//
-//    }
-//
-//    public String symbol() {
-//
-//    }
-//
-//    public String identifier() {
-//
-//    }
-//
-//    public Integer intVal() {
-//
-//    }
-//
-//    public String stringVal() {
-//
-//    }
 
 
 }
