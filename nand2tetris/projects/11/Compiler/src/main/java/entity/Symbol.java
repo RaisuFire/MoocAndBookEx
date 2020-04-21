@@ -49,4 +49,9 @@ public class Symbol {
     public void setIndex(Integer index) {
         this.index = index;
     }
+
+    @Override
+    public String toString() {
+        return "Symbol: name:{0}, type:{1}, kind{2}, index{3}";
+    }
 }

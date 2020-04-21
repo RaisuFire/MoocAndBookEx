@@ -1,3 +1,4 @@
+import constant.Keyword;
 import constant.Kind;
 import constant.TokenType;
 import entity.Symbol;
@@ -66,15 +67,23 @@ public class CompilationEngine1 {
         while (token.getVal().equals("var")) {
             this.compileVarDec();
         }
-
         this.compileStatements();
-
         this.eat("}");
 
     }
 
 
     public void compileSubroutineCall() {
+        assert (token.getType().equals(TokenType.IDENTIFIER));
+        this.eat(token.getVal());
+        if (token.getVal().equals(".")) {
+            this.eat(".");
+            this.eat(token.getVal());
+        }
+        this.eat("(");
+        this.compileExpressionList();
+        this.eat(")");
+        this.eat(";");
 
     }
 
@@ -104,15 +113,33 @@ public class CompilationEngine1 {
             this.tabel.define(type, name1, Kind.VAR);
         }
         this.eat(";");
-
     }
 
     private void compileStatements() {
+        if (null == token) {
+            return;
+        } else if (token.getVal().equals("}") && token.getType().equals(TokenType.SYMBOL)) {
+            return;
+        }  else if (token.getType() == TokenType.KEYWORD) {
+            if (Keyword.LET.getText().equals(token.getVal())) {
+                this.compileLet();
+            } else if (Keyword.DO.getText().equals(token.getVal())) {
+                this.compileDo();
+            } else if (Keyword.IF.getText().equals(token.getVal())) {
+                this.compileIf();
+            } else if (Keyword.WHILE.getText().equals(token.getVal())) {
+                this.compileWhile();
+            } else if (Keyword.RETURN.getText().equals(token.getVal())) {
+                this.compileReturn();
+            }
+        }
+        compileStatements();
 
     }
 
     public void compileDo() {
-
+        this.eat("do");
+        this.compileSubroutineCall();
     }
 
     public void compileLet() {
