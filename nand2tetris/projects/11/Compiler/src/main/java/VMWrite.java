@@ -13,39 +13,72 @@ public class VMWrite {
     }
 
     public void writePush(String segment, Integer index) {
-        writer.println("push " + segment + " " + index);
+        this.println("push " + segment + " " + index);
     }
 
     public void writePop(String segment, Integer index) {
-        writer.println("pop " + segment + " " + index);
+        this.println("pop " + segment + " " + index);
     }
 
     public void writeArithmetic(String command) {
-        writer.println(command);
+        if (command.equals("<")) {
+            this.println("lt");
+        } else if (command.equals(">")) {
+            this.println("gt");
+        } else if (command.equals("&")) {
+            this.println("and");
+        } else if (command.equals("+")) {
+            this.println("add");
+        } else if (command.equals("-")) {
+            this.println("sub");
+        } else if (command.equals("*")) {
+            this.println("call Math.multiply 2");
+        } else if (command.equals("/")) {
+            this.println("call Math.divide 2");
+        } else if (command.equals("=")) {
+            this.println("eq");
+        } else if (command.equals("|")) {
+            this.println("or");
+        }
     }
 
     public void writeLabel(String label) {
-        writer.println("label " + label);
+        this.println("label " + label);
     }
 
     public void writeGoto() {
-
+        this.println("return");
     }
 
     public void writeIf() {
 
     }
 
-    public void writeCall(String ClassName, String methodName, Integer args) {
-        writer.println("call");
+    public void writeFunction(String className, String methodName, Integer numArgs) {
+        this.println("function " + className + "." + methodName + " " + numArgs);
     }
 
-    public void writeReturn() {
+    public void writeCall(String className, String methodName, Integer numArgs) {
+        this.println("call " + className + "." + methodName + " " + numArgs);
+    }
 
+    public void writeReturn(String type) {
+        if ("void".equals(type)) {
+            this.println(
+                    "pop temp 0\n" +
+                    "push constant 0\n" +
+                    "return\n"
+            );
+        }
     }
 
     public void close() {
+        this.writer.close();
+    }
 
+    private void println(String str) {
+        this.writer.println(str);
+        this.writer.flush();
     }
 
 }

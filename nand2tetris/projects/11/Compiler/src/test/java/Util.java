@@ -1,5 +1,9 @@
 import entity.CharUtil;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 public class Util {
     public static String skipWhileSpace(String str) {
         String newStr = "";
@@ -23,5 +27,13 @@ public class Util {
             }
         }
         return true;
+    }
+
+    public static JackTokenizer initToken(File inFile) throws IOException {
+        byte[] bytesArray = new byte[(int) inFile.length()];
+        FileInputStream fis = new FileInputStream(inFile);
+        fis.read(bytesArray); //read file into bytes[]
+        fis.close();
+        return new JackTokenizer(new String(bytesArray));
     }
 }

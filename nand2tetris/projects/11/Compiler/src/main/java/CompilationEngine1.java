@@ -4,13 +4,20 @@ import constant.TokenType;
 import entity.Symbol;
 import entity.Token;
 
+import java.util.Arrays;
+
 public class CompilationEngine1 {
+    public static String[] opArray = new String[]{"+", "-", "*", "/", "&", "|", "<", ">", "=", "&lt;", "&gt;", "&amp;"};
+    public static String[] unaryArray = new String[] {"~", "-"};
+
+
     private JackTokenizer tokenizer;
     private SymbolTabel tabel;
     private VMWrite vmWrite;
     private Token token;
 
     private String className = "";
+    private String returnType = "";
     private String subroutineName = "";
 
 
@@ -38,12 +45,12 @@ public class CompilationEngine1 {
     public void compileClassVarDec() {
         Kind kind = token.getVal().equals("static")? Kind.STATIC: Kind.FIELD;
         this.eat(kind.getText());
-        String type = this.argFromToken();
-        String name = this.argFromToken();
+        String type = this.eat(token.getVal());
+        String name = this.eat(token.getVal());
         this.tabel.define(name, type, kind);
         while (token.getVal().equals(",")) {
             this.eat(",");
-            String name1 = this.argFromToken();
+            String name1 = this.eat(token.getVal());
             this.tabel.define(name1, type, kind);
         }
         this.eat(";");
@@ -53,63 +60,68 @@ public class CompilationEngine1 {
         assert (token.getVal().equals("function") || token.getVal().equals("method") || token.getVal().equals("constructor"));
         tabel.startSubroutine();
         this.eat(token.getVal());
-        this.eat(token.getVal());
-        subroutineName = token.getVal();
-        this.eat(token.getVal());
+        String type = this.eat(token.getVal());
+        subroutineName = this.eat(token.getVal());
+
         this.eat("(");
         this.compileParameterList();
         this.eat(")");
-        this.compileSubroutineBody();
-    }
 
-    private void compileSubroutineBody() {
         this.eat("{");
         while (token.getVal().equals("var")) {
             this.compileVarDec();
         }
+
+        Integer numArgs = tabel.varCount(Kind.VAR) + tabel.varCount(Kind.ARGUMENT);
+        vmWrite.writeFunction(className, subroutineName, numArgs);
+
         this.compileStatements();
         this.eat("}");
-
     }
+
 
 
     public void compileSubroutineCall() {
         assert (token.getType().equals(TokenType.IDENTIFIER));
-        this.eat(token.getVal());
+        String objectName = "";
+        String methodName = "";
+        objectName = this.eat(token.getVal());
         if (token.getVal().equals(".")) {
-            this.eat(".");
             this.eat(token.getVal());
+            methodName = this.eat(token.getVal());
         }
         this.eat("(");
-        this.compileExpressionList();
+        Integer n = this.compileExpressionList();
         this.eat(")");
         this.eat(";");
-
+        this.vmWrite.writeCall(objectName, methodName, n);
     }
 
-    public void compileParameterList() {
+    private void compileParameterList() {
         if (token.getVal().equals(")")) {
-            return;
+            return ;
         }
-        String type = this.argFromToken();
-        String name = this.argFromToken();
+        String type = this.eat(token.getVal());
+        String name = this.eat(token.getVal());
         this.tabel.define(name, type, Kind.ARGUMENT);
         while (token!= null && token.getVal().equals(",")) {
             this.eat(",");
-            String type1 = this.argFromToken();
-            String name1 = this.argFromToken();
+            String type1 = this.eat(token.getVal());
+            String name1 = this.eat(token.getVal());
             this.tabel.define(name1, type1, Kind.ARGUMENT);
         }
+
+        return ;
     }
 
     private void compileVarDec() {
         this.eat("var");
-        String type = this.argFromToken();
-        String name = this.argFromToken();
+        String type = this.eat(token.getVal());
+        String name = this.eat(token.getVal());
         this.tabel.define(name, type, Kind.VAR);
         while (token.getVal().equals(",")) {
             this.eat(",");
-            String name1 = this.argFromToken();
+            String name1 = this.eat(token.getVal());
             this.tabel.define(type, name1, Kind.VAR);
         }
         this.eat(";");
@@ -150,6 +162,11 @@ public class CompilationEngine1 {
     }
 
     public void compileReturn() {
+        this.eat("return");
+        String type = this.eat(token.getVal());
+        if (type.equals(";")) {
+            this.vmWrite.writeReturn("void");
+        }
     }
 
     public void compileIf() {
@@ -157,33 +174,69 @@ public class CompilationEngine1 {
     }
 
     private void compileExpression() {
-
+        this.compileTerm();
+        while (Arrays.asList(opArray).contains(token.getVal())) {
+            String op = this.eat(token.getVal());
+            this.compileTerm();
+            this.vmWrite.writeArithmetic(op);
+        }
     }
 
     public void compileTerm() {
-
+        if (token.getVal().equals("(") && token.getType().equals(TokenType.SYMBOL)) {
+            this.eat("(");
+            this.compileExpression();
+            this.eat(")");
+        }
+        if (token.getType().equals(TokenType.INT_CONST)) {
+            this.vmWrite.writePush("constant", Integer.valueOf(token.getVal()));
+            this.eat(token.getVal());
+        }
+//        if (Arrays.asList(unaryArray).contains(token.getVal())) {
+//            this.eat(token.getVal());
+//            this.compileTerm();
+//        }
+//        this.eat(token.getVal());
+//        if (token.getVal().equals(".") && token.getType().equals(TokenType.SYMBOL)) {
+//            this.eat(".");
+//            this.eat(token.getVal());
+//            this.eat("(");
+//            this.compileExpressionList();
+//            this.eat(")");
+//        }
+//        if (token.getVal().equals("[") && token.getType().equals(TokenType.SYMBOL)) {
+//            this.eat("[");
+//            this.compileExpression();
+//            this.eat("]");
+//        }
     }
 
-    public void compileExpressionList() {
-
+    private Integer compileExpressionList() {
+        int n = 0;
+        if (token.getVal().equals(")") && token.getType().equals(TokenType.SYMBOL)) {
+            return n;
+        }
+        this.compileExpression();
+        n += 1;
+        while (token.getVal().equals(",")) {
+            token = tokenizer.advance();
+            this.compileExpression();
+            n += 1;
+        }
+        return n;
     }
 
-    private String argFromToken() {
-        String s = token.getVal();
-        this.eat(s);
-        return s;
-    }
-
-    private void eat(String string) {
+    private String eat(String string) {
         if (!token.getVal().equals(string)) {
             throw new RuntimeException("unexpect token" + token);
         } else {
             token = tokenizer.advance();
         }
+        return string;
     }
 
     public void firstToken() {
-
+        token = tokenizer.advance();
     }
 
 

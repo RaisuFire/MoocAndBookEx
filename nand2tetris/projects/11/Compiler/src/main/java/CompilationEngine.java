@@ -117,7 +117,6 @@ public class CompilationEngine {
     }
 
     public void compileStatements() {
-//        System.out.println(xml);
         if (null == token) {
             return;
         } else if (token.getVal().equals("}") && token.getType().equals(TokenType.SYMBOL)) {
@@ -213,7 +212,7 @@ public class CompilationEngine {
     private void compileExpression() {
         xml += "<expression>\n";
         this.compileTerm();
-        if (Arrays.asList(opArray).contains(token.getVal())) {
+        while (Arrays.asList(opArray).contains(token.getVal())) {
             this.eat(token.getVal());
             this.compileTerm();
         }
