@@ -1,0 +1,63 @@
+class Trapezoid  {
+    field int x, y;
+
+    constructor Trapezoid new(int Ax, int Ay) {
+        let x = Ax;
+        let y = Ay;
+        do draw(-1);
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void moveDown() {
+        if (y < 14) {
+            let y = y + 1;
+        }
+
+        return;
+    }
+
+    method void moveRight() {
+        if (x < 8) {
+            let x = x + 1;
+        }
+        return;
+    }
+
+    method void moveLeft() {
+        if (x > 0) {
+            let x = x - 1;
+        }
+        return;
+    }
+
+
+    method void draw(int c) {
+        do Unit.draw(x, y, c);
+        do Unit.draw(x+1, y, c);
+        do Unit.draw(x, y+1, c);
+        do Unit.draw(x+1, y+1, c);
+        return;
+    }
+
+    method void run() {
+        var boolean exit;
+        let exit = false;
+
+        while (~exit) {
+            do Output.printInt(y);
+            do draw(0);
+            do moveDown();
+            do draw(-1);
+            do Sys.wait(1000);
+        }
+
+        return;
+    }
+
+
+}

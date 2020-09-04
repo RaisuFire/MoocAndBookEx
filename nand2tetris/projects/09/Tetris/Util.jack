@@ -1,0 +1,119 @@
+class Util {
+
+    function void draw(int x, int y, int c) {
+        var int memAddress;
+        let memAddress = 16384 + (512 * y) + (1 * x);
+        do Memory.poke(memAddress+0, c);
+        do Memory.poke(memAddress+32, c);
+        do Memory.poke(memAddress+64, c);
+        do Memory.poke(memAddress+96, c);
+        do Memory.poke(memAddress+128, c);
+        do Memory.poke(memAddress+160, c);
+        do Memory.poke(memAddress+192, c);
+        do Memory.poke(memAddress+224, c);
+        do Memory.poke(memAddress+256, c);
+        do Memory.poke(memAddress+288, c);
+        do Memory.poke(memAddress+320, c);
+        do Memory.poke(memAddress+352, c);
+        do Memory.poke(memAddress+384, c);
+        do Memory.poke(memAddress+416, c);
+        do Memory.poke(memAddress+448, c);
+        do Memory.poke(memAddress+480, c);
+        return;
+    }
+
+    function void drawLine(int y, int c) {
+        do Util.draw(0, y, c);
+        do Util.draw(1, y, c);
+        do Util.draw(2, y, c);
+        do Util.draw(3, y, c);
+        do Util.draw(4, y, c);
+        do Util.draw(5, y, c);
+        do Util.draw(6, y, c);
+        do Util.draw(7, y, c);
+        do Util.draw(8, y, c);
+        do Util.draw(9, y, c);
+
+        return;
+    }
+
+
+    function boolean fullLine(int y) {
+        var int i;
+        var boolean fullLine, fullUnit;
+
+        let i = 0;
+        while (i < 10) {
+            let fullUnit = Util.fullUnit(i, y);
+            if (fullUnit) {
+                let i = i + 1;
+            } else {
+                return fullLine;
+            }
+        }
+        return true;
+    }
+
+
+    function boolean fullUnit(int x, int y) {
+        var int memAddress, i, t;
+        var Array l;
+
+        let i = 0;
+        let t = 0;
+        let memAddress = 16384 + (512 * y) + (1 * x);
+        while (i < 16) {
+            let t = Memory.peek(memAddress + (32 * i));
+            if (~(t = -1)) {
+                return false;
+            }
+            let i = i + 1;
+        }
+        return true;
+    }
+
+    function void redraw(int y) {
+        while (y > 0) {
+            do Util.redrawLine(y);
+            let y = y - 1;
+        }
+        return;
+    }
+
+    function void redrawLine(int y) {
+        var int x;
+        let x = 0;
+        while (x < 10) {
+            do Util.redrawUnit(x, y);
+            let x = x + 1;
+        }
+
+        return;
+    }
+
+    function void redrawUnit(int x, int y) {
+        var int memAddress, c, i;
+
+        let i = y - 1;
+        let memAddress = 16384 + (512 * i) + (1 * x);
+        while (i > 0) {
+            let c = Memory.peek(memAddress + (32 * i));
+            do Memory.poke(memAddress + (32 * i) + 512, c);
+            let i = i - 1;
+        }
+
+        return;
+    }
+
+
+    function boolean collide(int x, int y) {
+        var int memAddress, c, h;
+
+        let memAddress = 16384 + (512 * (y + 2)) + (1 * x);
+        let c = Memory.peek(memAddress);
+
+        do Output.printInt(c);
+        return (~(c = 0));
+    }
+
+}
