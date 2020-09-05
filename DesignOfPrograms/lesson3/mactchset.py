@@ -20,6 +20,8 @@ def matchset(pattern, text):
     "Match pattern at start of text; return a set of remainders of text."
     op, x, y = components(pattern)
     if 'lit' == op:
+        print("text", text)
+        print("set([text[len(x):]])", set([text[len(x):]]))
         return set([text[len(x):]]) if text.startswith(x) else null
     elif 'seq' == op:
         return set(t2 for t1 in matchset(x, text) for t2 in matchset(y, t1))
@@ -32,6 +34,10 @@ def matchset(pattern, text):
     elif 'eol' == op:
         return set(['']) if text == '' else null
     elif 'star' == op:
+        print('t2 for t1 in matchset(x, text)',  [t1 for t1 in matchset(x, text)])
+        print('====', set(t2 for t1 in matchset(x, text)
+                    for t2 in matchset(pattern, t1) if t1 != text))
+
         return (set([text]) |
                 set(t2 for t1 in matchset(x, text)
                     for t2 in matchset(pattern, t1) if t1 != text))
