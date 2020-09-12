@@ -19,17 +19,19 @@ def matchset(pattern, text):
 def lit(s): return lambda text: set([text[len(s):]]) if text.startswith(s) else null
 
 
-def seq(x, y): return lambda text: set().union(*map(y, x(text)))
+def seq(x, y):
+    return lambda text: set().union(*map(y, x(text)))
 
 
 def alt(x, y):
-    ...
+    return lambda text: x(text) | y(text)
 
 
 null = frozenset([])
 
 
 def test():
+    f = seq(lit('a'), lit('b'))
     g = alt(lit('a'), lit('b'))
     assert g('abc') == set(['bc'])
     return 'test passes'
