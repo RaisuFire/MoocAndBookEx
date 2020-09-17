@@ -36,6 +36,33 @@ def seq(x, y):
     return ('seq', x, y)
 
 
+@decorator
+def meno(f):
+    """Decorator that caches the return value for each call to f(*args)
+    then when called again with same args, we can just look it up"""
+
+
+
+@decorator
+def countcalls(f):
+    "Decorator that makes the function count calls to do it, in callcounts[f]"
+
+    def _f(*args):
+        callcounts[_f] += 1
+        return f(*args)
+
+    callcounts[_f] = 0
+    return _f
+
+
+
+
+@countcalls
+def fib(n):
+    return 1 if n <= 1 else fib(n-1) + fib(n-2)
+
+
+callcounts = {}
 # seq = n_ary(seq)
 
 help(seq)
