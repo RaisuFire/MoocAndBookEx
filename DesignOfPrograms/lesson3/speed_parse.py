@@ -21,9 +21,12 @@ def parse(start_symbol, text, grammar):
     longest parse first; don't do 'E => T | T op E'
     Also, no left recursion allowed: don't do 'E => E op T'"""
 
+    # print("grammar", grammar)
+
     tokenizer = grammar[' '] + '(%s)'
 
     def parse_sequence(sequence, text):
+        # print("sequence: ", sequence, " text: ", text)
         result = []
         for atom in sequence:
             tree, text = parse_atom(atom, text)
@@ -32,12 +35,14 @@ def parse(start_symbol, text, grammar):
         return result, text
 
     def parse_atom(atom, text):
+        # print("atom: ", atom, " text: ", text)
         if atom in grammar:  # Non-Terminal: tuple of alternatives
             for alternative in grammar[atom]:
                 tree, rem = parse_sequence(alternative, text)
                 if rem is not None: return [atom] + tree, rem
             return Fail
         else:  # Terminal: match characters against start of text
+            print(tokenizer % atom)
             m = re.match(tokenizer % atom, text)
             return Fail if (not m) else (m.group(1), text[m.end():])
 
@@ -79,7 +84,7 @@ def memo(f):
     return _f
 
 
-def split(text, sep=None, maxsplit=1):
+def split(text, sep=None, maxsplit=-1):
     """Like str.split applied to text, but strips whitespace from each piece"""
     return [t.strip() for t in text.strip().split(sep, maxsplit) if t]
 
@@ -87,22 +92,24 @@ def split(text, sep=None, maxsplit=1):
 def grammar(description, whitespace=r'\s*'):
     """Convert a description to a grammar"""
     G = {' ': whitespace}
+
     description = description.replace('\t', ' ')
-    for line in split(description, '\n'):
-        lhs, rhs = split(line, '=>', 1)
+    for line in description.splitlines():
+        lhs, rhs = split(line, ' => ', 1)
         alternatives = split(rhs, ' | ')
         G[lhs] = tuple(map(split, alternatives))
     return G
 
-G = grammar(r"""
-    Exp    => Term[+-] Exp | Term
-    Term   => Factor | [*/] Term | Factor
-    Factor => Funcall | Var | Num |[(] Exp [)]
-    Funcall=> Var [(] Exps [)]
-    Exps   => Exp, Exps | Exp
-    Var    => [a-zA-z]\w*
-    Num    => [-+]?[0-9]+(.[0-9]*)?
-""")
+G = grammar(
+ """Exp     => Term  [+-]  Exp | Term
+    Term    => Factor [*/] Term | Factor
+    Factor  => Funcall | Var | Num | [(] Exp [)]
+    Funcall => Var [(] Exps [)]
+    Exps    => Exp [,] Exps | Exp
+    Var     => [a-zA-z]\w*
+    Num     => [-+]?[0-9]+([.][0-9]*)?""")
 
+
+# print(G)
 
 print(parse('Exp', '3*x + b', G))
