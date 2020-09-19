@@ -34,6 +34,7 @@ def parse(start_symbol, text, grammar):
             result.append(tree)
         return result, text
 
+    @memo
     def parse_atom(atom, text):
         # print("atom: ", atom, " text: ", text)
         if atom in grammar:  # Non-Terminal: tuple of alternatives
