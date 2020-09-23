@@ -33,12 +33,20 @@ def slow_inverse(f, delta=1 / 128.):
         # while f(x) < y:
         #     x += delta
         # Now x is too big, x-delta is too small; pick the closest to y
-
-        while abs(f(x) - y) < delta:
-            print("x", x)
-            x = (x + y) / 2
-
-        return x
+        m = (x + y) / 2
+        z = y
+        n = 0
+        while ((m - x > delta) or (y - m > delta)) and n < 100:
+            print('f(m) - z', f(m) - z)
+            if f(m) > z:
+                y = m
+                m = (x + y) / 2
+            else:
+                x = m
+                m = (x + y) / 2
+            print('m', m)
+            n += 1
+        return m
         # return x if (f(x) - y < y - f(x - delta)) else x - delta
 
     return f_1
