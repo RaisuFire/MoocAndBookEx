@@ -20,7 +20,14 @@ def bsuccessors(state):
     the 'light', and t is a number indicating the elapsed time. Action is represented
     as a tuple (person1, person2, arrow), where arrow is '->' for here to there and
     '<-' for there to here."""
+
     here, there, t = state
+    # assert here or there
+    return_set = {}
+    for s in here:
+        i_set = {(here.)}
+
+
 
 
 
