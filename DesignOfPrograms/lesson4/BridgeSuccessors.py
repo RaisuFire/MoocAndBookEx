@@ -25,7 +25,8 @@ def bsuccessors(state):
     # assert here or there
     return_set = {}
     for s in here:
-        i_set = {(here.)}
+        here = here.remove(s, 'light')
+        item = {(here.remove(s), here.remove('light')), ()}
 
 
 
