@@ -50,8 +50,5 @@ def test():
 
     return 'tests pass'
 
-def successor(state):
-
-
 
 print(test())
