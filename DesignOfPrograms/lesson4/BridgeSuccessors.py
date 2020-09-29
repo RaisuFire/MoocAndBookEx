@@ -22,11 +22,24 @@ def bsuccessors(state):
     '<-' for there to here."""
 
     here, there, t = state
-    # assert here or there
-    return_set = {}
-    for s in here:
-        here = here.remove(s, 'light')
-        item = {(here.remove(s), here.remove('light')), ()}
+    if 'light' in here:
+        return dict(((here - frozenset([a, b, 'light']),
+                      there | frozenset([a, b, 'light']),
+                      t + max(a + b)),
+                     '->',
+                     for a in here if a is not 'light'
+                     for b in here if b is not 'light'
+                      ))
+    else:
+        return dict(((here | frozenset([a, b, 'light']),
+                      there | frozenset([a, b, 'light']),
+                      t + max(a + b)),
+                      '<-',
+                      for a in there if a is not 'light'
+                      for b in there if b is not 'light'
+                      ))
+
+
 
 def test():
     assert bsuccessors((frozenset([1, 'light']), frozenset([]), 3)) == {
@@ -36,6 +49,9 @@ def test():
         (frozenset([2, 'light']), frozenset([]), 2): (2, 2, '<-')}
 
     return 'tests pass'
+
+def successor(state):
+
 
 
 print(test())
