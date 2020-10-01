@@ -16,6 +16,15 @@ def opt(x):         return alt(epsilon, x)
 dot = oneof('?')  # You could expand the alphabet to more chars.
 epsilon = lit('')  # The pattern that matches the empty string.
 
+
+
+def genseq(x, y, Ns):
+    Nss = range(max(Ns) + 1)
+    return set(m1 + m2
+               for m1 in x(Nss) for m2 in y(Nss)
+               if len(m1 + m2) in Ns)
+
+
 null = frozenset([])
 
 
@@ -35,5 +44,4 @@ def test():
     return 'tests pass'
 
 
-print
-test()
+print(test())
