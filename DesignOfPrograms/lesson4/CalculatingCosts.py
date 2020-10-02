@@ -20,9 +20,6 @@ def path_cost(path):
         return total_cost
 
 
-
-# ???
-
 def bcost(action):
     """Returns the cost (a number) of an action in the
     bridge problem."""
