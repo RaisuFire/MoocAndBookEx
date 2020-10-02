@@ -14,15 +14,10 @@ def path_cost(path):
     with the final action."""
     # path = (state, (action, total_cost), state, ... )
     if len(path) < 3:
-        return  path[1][2]
+        return  0
     else:
-        for i in range(len(path)):
-            if i % 2 != 0:
-                print(path[i])
-        # atc = path[1::2]
-        # print("atc", atc)
-        # ts = atc[1::2]
-        # return sum(t for t in ts)
+        action, total_cost = path[-2]
+        return total_cost
 
 
 
@@ -34,15 +29,15 @@ def bcost(action):
     # An action is an (a, b, arrow) tuple; a and b are
     # times; arrow is a string.
     a, b, arrow = action
-    return  # ???
+    return max(a, b)
 
 
 def test():
     assert path_cost(('fake_state1', ((2, 5, '->'), 5), 'fake_state2')) == 5
     assert path_cost(('fs1', ((2, 1, '->'), 2), 'fs2', ((3, 4, '<-'), 6), 'fs3')) == 6
-    # assert bcost((4, 2, '->'), ) == 4
-    # assert bcost((3, 10, '<-'), ) == 10
+    assert bcost((4, 2, '->'), ) == 4
+    assert bcost((3, 10, '<-'), ) == 10
     return 'tests pass'
 
 
-print(path_cost(('fake_state1', ((2, 5, '->'), 5), 'fake_state2')))
+print(test())
