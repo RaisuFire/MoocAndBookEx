@@ -13,42 +13,56 @@
 # An action is a tuple of (travelers, arrow), where the arrow is
 # '->' or '<-'. See the test() function below for some examples
 # of what your function's input and output should look like.
+#
+# def bsuccessors3(state):
+#     """Return a dict of {state:action} pairs.  State is (here, there, light)
+#     where here and there are frozen sets of people, light is 0 if the light is
+#     on the here side and 1 if it is on the there side.
+#     Action is a tuple (travelers, arrow) where arrow is '->' or '<-'"""
+#
+#     here, there, light = state
+#
+#     if light == 0:
+#         return dict(
+#             ((
+#                  here - frozenset([a, b]),
+#                  there | frozenset([a, b, 1]),
+#                     1),
+#                  (set([a, b]), '->')
+#             )
+#             for a in here
+#             for b in here
+#         )
+#
+#     elif light == 1:
+#         return dict(
+#             (
+#                 (here | frozenset([a, b]),
+#                  there - frozenset([a, b]),
+#                  0),
+#                 (set([a, b]), '<-')
+#             )
+#             for a in there
+#             for b in there
+#         )
+#     else:
+#         return dict()
+
 
 def bsuccessors3(state):
-    """Return a dict of {state:action} pairs.  State is (here, there, light)
-    where here and there are frozen sets of people, light is 0 if the light is
-    on the here side and 1 if it is on the there side.
-    Action is a tuple (travelers, arrow) where arrow is '->' or '<-'"""
+    _, _, light = state
+    return dict(bsuccessor3(state, set([a, b]))
+                for a in state [light]
+                for b in state [light])
 
-    here, there, light = state
-
+def bsuccessor3(state, travelers):
+    _, _, light = state
+    start = state[light] - travelers
+    dest = state[1-light] | travelers
     if light == 0:
-        return dict(
-            ((
-                 here - frozenset([a, b]),
-                 there | frozenset([a, b, 1]),
-                    1),
-                 (set([a, b]), '->')
-            )
-            for a in here
-            for b in here
-        )
-
-    elif light == 1:
-        return dict(
-            (
-                (here | frozenset([a, b]),
-                 there - frozenset([a, b]),
-                 0),
-                (set([a, b]), '<-')
-            )
-            for a in there
-            for b in there
-        )
+        return (start, dest, 1), (travelers, '->')
     else:
-        return dict()
-
-
+        return (start, dest, 0), (travelers, '<-')
 
 
 
