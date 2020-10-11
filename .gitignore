@@ -105,6 +105,7 @@ $RECYCLE.BIN/
 #idea
 *.idea/
 *out/
+*.out
 
 *venv/
 DesignOfPrograms/lesson3/test.py
