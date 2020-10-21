@@ -66,10 +66,11 @@ def play_pig(A, B, dierolls=dierolls()):
 
 def test():
     A, B = hold_at(50), clueless
-    rolls = iter([2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6]) # <-- Your rolls here
-    play_pig(A, B, rolls)
-    print(play_pig(A, B, rolls) == A)
-    # assert play_pig(A, B, rolls) == A
+    rolls = iter([6, 6, 6, 6, 6, 6, 6, 6, 2, 6]) # <-- Your rolls here
+    # play_pig(A, B, rolls)
+    # print("assert", play_pig(A, B, rolls).__name__)
+    # print(play_pig(A, B, rolls) == A)
+    assert play_pig(A, B, rolls) == A
     return 'test passes'
 
 
