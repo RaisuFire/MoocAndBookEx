@@ -85,7 +85,7 @@ def Pwin(state):
 
 def max_wins(state):
     "The optimal pig strategy chooses an action with the highest win probability."
-    return # your code here
+    return best_action(state, pig_actions, Q_pig, Pwin)
 
 
 def test():
