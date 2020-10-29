@@ -31,11 +31,13 @@ def memo(f):
     return _f
 
 other = {1:0, 0:1}
+goal = 30
 
 def roll(state, d):
     """Apply the roll action to a state (and a die roll d) to yield a new state:
     If d is 1, get 1 point (losing any accumulated 'pending' points),
     and it is the other player's turn. If d > 1, add d to 'pending' points."""
+    print("roll state", state, d)
     (p, me, you, pending) = state
     if d == 1:
         return (other[p], you, me+1, 0) # pig out; other player's turn
@@ -45,11 +47,13 @@ def roll(state, d):
 def hold(state):
     """Apply the hold action to a state to yield a new state:
     Reap the 'pending' points and it becomes the other player's turn."""
+    print("hold state", state)
     (p, me, you, pending) = state
     return (other[p], you, me+pending, 0)
 
 def Q_pig(state, action, Pwin):
     "The expected value of choosing action in state."
+    # print("state: ", state)
     if action == 'hold':
         return 1 - Pwin(hold(state))
     if action == 'roll':
@@ -57,17 +61,6 @@ def Q_pig(state, action, Pwin):
                 + sum(Pwin(roll(state, d)) for d in (2,3,4,5,6))) / 6.
     raise ValueError
 
-def best_action(state, actions, Q, U):
-    "Return the optimal action for a state, given U."
-    def EU(action): return Q(state, action, U)
-    return max(actions(state), key=EU)
-
-def pig_actions(state):
-    "The legal actions from a state."
-    _, _, _, pending = state
-    return ['roll', 'hold'] if pending else ['roll']
-
-goal = 40
 
 @memo
 def Pwin(state):
@@ -82,6 +75,19 @@ def Pwin(state):
     else:
         return max(Q_pig(state, action, Pwin)
                    for action in pig_actions(state))
+
+def best_action(state, actions, Q, U):
+    "Return the optimal action for a state, given U."
+    def EU(action): return Q(state, action, U)
+    for action in actions(state):
+        print("EU(action)", EU(action))
+    return max(actions(state), key=EU)
+
+def pig_actions(state):
+    "The legal actions from a state."
+    _, _, _, pending = state
+    return ['roll', 'hold'] if pending else ['roll']
+
 
 def max_wins(state):
     "The optimal pig strategy chooses an action with the highest win probability."
@@ -111,6 +117,6 @@ def test():
     assert(max_wins((0, 11, 0, 24)))  == "roll"
     return 'tests pass'
 
-print(test())
+print(max_wins((1, 5, 28, 4)))
 
 
