@@ -116,7 +116,8 @@ def win_diff(state):
 def max_diffs(state):
     """A strategy that maximizes the expected difference between my final score
     and my opponent's."""
-    # your code here
+    (p, me, you, pending) = state
+    return best_action(state, pig_actions, Q_pig, win_diff)
 
 
 def max_wins(state):
